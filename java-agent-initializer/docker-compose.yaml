@@ -5,7 +5,7 @@ services:
     image: java-agent-initializer:latest
     build: .
     volumes:
-    - "java_agent_data:/shared/java-agent/"
+    - "java_agent_data:/shared-vol/"
 
 volumes:
   java_agent_data:
