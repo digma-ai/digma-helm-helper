@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deployment
+  labels:
+    app: pet-clinic-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pet-clinic-app
+  template:
+    metadata:
+      labels:
+        app: pet-clinic-app
+    spec:
+      containers:
+      - name: pet-clinic
+        image: springio/petclinic:latest
+#--------------------------------------------- 
+# agent
+        env:
+        - name: JAVA_TOOL_OPTIONS 
+          value: -javaagent:/shared/java-agent/opentelemetry-javaagent.jar -Dotel.javaagent.extensions=/shared/java-agent/digma-otel-agent-extension.jar -Dotel.exporter.otlp.traces.endpoint=http://meloona-digma-collector-api.meloona.svc.cluster.local:5050 -Dotel.traces.exporter=otlp -Dotel.exporter.otlp.protocol=grpc -Dotel.instrumentation.common.experimental.controller.telemetry.enabled=true -Dotel.instrumentation.common.experimental.view.telemetry.enabled=true -Dotel.instrumentation.experimental.span-suppression-strategy=none -Dotel.service.name=spring-petclinic
+        - name: OTEL_RESOURCE_ATTRIBUTES
+          value: digma.environment=PETCLINIC
+
+        volumeMounts:
+        - name: shared
+          mountPath: /shared/java-agent
+
+      initContainers:
+      - name: java-agent-initializer
+        image: digmaai/java-agent-initializer:latest
+        volumeMounts:
+        - name: shared
+          mountPath: /shared/java-agent
+
+      volumes:
+      - name: shared
+        emptyDir: {}
+#--------------------------------------------- 
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: petclinic
+spec:
+  selector:
+    app: pet-clinic-app
+  ports:
+  - port: 8080
+    protocol: TCP

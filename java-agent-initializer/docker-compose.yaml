@@ -1,0 +1,11 @@
+version: "3.6"
+
+services:
+  digma-compound:
+    image: java-agent-initializer:latest
+    build: .
+    volumes:
+    - "java_agent_data:/shared/java-agent/"
+
+volumes:
+  java_agent_data:
