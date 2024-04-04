@@ -14,11 +14,13 @@ Also edit `patch.yaml` to select right container for your application (in our ca
 ## How to install:
 
 ```
+cd ./kustomize
 helm install petclinic ../pet-clinic-helm-chart -n petclinic --post-renderer ./kustomize
 ```
 
 ## Hot to upgrade:
 
 ```
+cd ./kustomize
 helm upgrade petclinic ../pet-clinic-helm-chart -n petclinic --post-renderer ./kustomize
 ```
