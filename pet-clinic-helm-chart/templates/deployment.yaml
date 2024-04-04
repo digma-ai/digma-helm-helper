@@ -15,33 +15,9 @@ spec:
         app: pet-clinic-app
     spec:
       containers:
-      - name: pet-clinic
-        image: springio/petclinic:latest
-#--------------------------------------------- 
-# agent
-        env:
-        - name: JAVA_TOOL_OPTIONS 
-          value: -javaagent:/shared-vol/otel-agent.jar -Dotel.javaagent.extensions=/shared-vol/digma-ext.jar -Dotel.exporter.otlp.traces.endpoint=http://meloona-digma-collector-api.meloona.svc.cluster.local:5050 -Dotel.traces.exporter=otlp -Dotel.metrics.exporter=none -Dotel.logs.exporter=none -Dotel.exporter.otlp.protocol=grpc -Dotel.instrumentation.common.experimental.controller.telemetry.enabled=true -Dotel.instrumentation.common.experimental.view.telemetry.enabled=true -Dotel.instrumentation.experimental.span-suppression-strategy=none -Dotel.service.name=spring-petclinic
-        - name: OTEL_RESOURCE_ATTRIBUTES
-          value: digma.environment=PETCLINIC
-
-        volumeMounts:
-        - name: shared
-          mountPath: /shared-vol
-
-      initContainers:
-      - name: java-agent-initializer
-        image: digmaai/java-agent-initializer:latest
-        volumeMounts:
-        - name: shared
-          mountPath: /shared-vol
-
-      volumes:
-      - name: shared
-        emptyDir: {}
-#--------------------------------------------- 
+        - name: pet-clinic
+          image: springio/petclinic:latest
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -50,5 +26,5 @@ spec:
   selector:
     app: pet-clinic-app
   ports:
-  - port: 8080
-    protocol: TCP
+    - port: 8080
+      protocol: TCP
