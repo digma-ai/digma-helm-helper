@@ -62,11 +62,11 @@ helm upgrade petclinic ../pet-clinic-helm-chart -n petclinic --post-renderer ./k
 
 You got:
 ```
-Error: error while running post render on files: error while running command /Users/borysyermakov/Documents/work/Digma/java-in-helm-instrumentation/kustomize/kustomize_build.sh. error output:
+Error: error while running post render on files: error while running command /java-in-helm-instrumentation/kustomize/kustomize_build.sh. error output:
 Error: add operation does not apply: doc is missing path: "/spec/template/spec/containers/0/volumeMounts/-": missing value
 : exit status 1
 helm.go:84: [debug] exit status 1
-error while running command /Users/borysyermakov/Documents/work/Digma/java-in-helm-instrumentation/kustomize/kustomize_build.sh. error output:
+error while running command /java-in-helm-instrumentation/kustomize/kustomize_build.sh. error output:
 Error: add operation does not apply: doc is missing path: "/spec/template/spec/containers/0/volumeMounts/-": missing value
 ```
 The problem is that your `volumeMounts` for your container is empty and kustomize cannot add it. 
