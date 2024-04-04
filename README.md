@@ -2,14 +2,29 @@
 
 ## How to use:
 
-At first to be able to run `kustomize` executable you have to set execute permissions to `./kustomize/kustomize` file
+At first to be able to run `kustomize` executable you have to set execute permissions to `./kustomize/*` files
 
 ```
 sudo chmod +x ./kustomize/kustomize
+sudo chmod +x ./kustomize/prepare.sh
 ```
 
-Then you need to edit `./kustomize/kustomization.yaml` and set right `labelSelector`
-Also edit `patch.yaml` to select right container for your application (in our case it is `pet-clinic`)
+Then you need to update `prepare.sh` file with your export variables and run
+
+```
+cd ./kustomize
+./prepare.sh
+```
+
+Double check that all variables were substituted in the `./kustomize/kustomization.yaml` file.
+List: `<DIGMA_OTLP_ENDPOINT>, <SERVICE_OTEL_RESOURCE_ATTRIBUTES>, <SERVICE_NAME>, <LABEL_TARGET_SELECTOR>`
+
+## Hot to test and check configuration:
+
+```
+cd ./kustomize
+helm template petclinic ../pet-clinic-helm-chart -n petclinic --post-renderer ./kustomize --debug --dry-run
+```
 
 ## How to install:
 

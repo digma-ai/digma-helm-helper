@@ -17,6 +17,10 @@ spec:
       containers:
         - name: pet-clinic
           image: springio/petclinic:latest
+          env:
+            - name: SOME_EXISTING_ENV
+              value: some_value
+          volumeMounts: []
 ---
 apiVersion: v1
 kind: Service
