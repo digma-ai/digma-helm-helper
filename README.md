@@ -72,3 +72,10 @@ Error: add operation does not apply: doc is missing path: "/spec/template/spec/c
 The problem is that your `volumeMounts` for your container is empty and kustomize cannot add it. 
 
 How to fix: change line `https://github.com/digma-ai/java-in-helm-instrumentation/blob/main/kustomize/kustomization.yaml#L32` from `path: "/spec/template/spec/containers/0/volumeMounts/-"` to `path: "/spec/template/spec/containers/0/volumeMounts"`
+
+
+Kustomize updates only the first container of my deployment.
+
+We assume you have only one container per deployment configuration, if it's not true for you, you need to duplicate patch `https://github.com/digma-ai/java-in-helm-instrumentation/blob/main/kustomize/kustomization.yaml#L9` section and and change duplicated lines `11,27,32` with next number of your container (to `1`, means second container). 
+
+Example: path: "/spec/template/spec/containers/**1**/env/-"
