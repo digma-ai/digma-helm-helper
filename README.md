@@ -5,7 +5,7 @@
 At first to be able to run `kustomize` executable you have to set execute permissions to `./kustomize/*` files
 
 ```
-sudo chmod +x ./kustomize/kustomize
+sudo chmod +x ./kustomize/kustomize_build.sh
 sudo chmod +x ./kustomize/prepare.sh
 ```
 
@@ -23,19 +23,19 @@ List: `<DIGMA_OTLP_ENDPOINT>, <SERVICE_OTEL_RESOURCE_ATTRIBUTES>, <SERVICE_NAME>
 
 ```
 cd ./kustomize
-helm template petclinic ../pet-clinic-helm-chart -n petclinic --post-renderer ./kustomize --debug --dry-run
+helm template petclinic ../pet-clinic-helm-chart -n petclinic --post-renderer ./kustomize_build.sh --debug --dry-run
 ```
 
 ## How to install:
 
 ```
 cd ./kustomize
-helm install petclinic ../pet-clinic-helm-chart -n petclinic --post-renderer ./kustomize
+helm install petclinic ../pet-clinic-helm-chart -n petclinic --post-renderer ./kustomize_build.sh
 ```
 
 ## Hot to upgrade:
 
 ```
 cd ./kustomize
-helm upgrade petclinic ../pet-clinic-helm-chart -n petclinic --post-renderer ./kustomize
+helm upgrade petclinic ../pet-clinic-helm-chart -n petclinic --post-renderer ./kustomize_build.sh
 ```
