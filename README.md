@@ -58,3 +58,17 @@ helm install petclinic ../pet-clinic-helm-chart -n petclinic --post-renderer ./k
 cd ./kustomize
 helm upgrade petclinic ../pet-clinic-helm-chart -n petclinic --post-renderer ./kustomize_build.sh
 ```
+# Troubleshooting
+
+You got:
+```
+Error: error while running post render on files: error while running command /Users/borysyermakov/Documents/work/Digma/java-in-helm-instrumentation/kustomize/kustomize_build.sh. error output:
+Error: add operation does not apply: doc is missing path: "/spec/template/spec/containers/0/volumeMounts/-": missing value
+: exit status 1
+helm.go:84: [debug] exit status 1
+error while running command /Users/borysyermakov/Documents/work/Digma/java-in-helm-instrumentation/kustomize/kustomize_build.sh. error output:
+Error: add operation does not apply: doc is missing path: "/spec/template/spec/containers/0/volumeMounts/-": missing value
+```
+The problem is that your `volumeMounts` for your container is empty and kustomize cannot add it. 
+
+How to fix: change line `https://github.com/digma-ai/java-in-helm-instrumentation/blob/main/kustomize/kustomization.yaml#L32` from `path: "/spec/template/spec/containers/0/volumeMounts/-"` to `path: "/spec/template/spec/containers/0/volumeMounts"`
