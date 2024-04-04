@@ -1,5 +1,9 @@
 # java-in-helm-instrumentation
 
+## Prerequisite
+
+Kustomize cli should be installed (https://kustomize.io/)
+
 ## How to use:
 
 At first to be able to run `kustomize` executable you have to set execute permissions to `./kustomize/*` files
