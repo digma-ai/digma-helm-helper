@@ -36,4 +36,69 @@ Kustomize updates only the first container of my deployment.
 
 We assume you have only one container per deployment configuration, if it's not true for you, you need to duplicate patch `https://github.com/digma-ai/java-in-helm-instrumentation/blob/main/kustomize/kustomization.yaml#L9` section and and change duplicated lines `11,27,32` with next number of your container (to `1`, means second container). 
 
-Example: path: "/spec/template/spec/containers/**1**/env/-"
+Example: 
+```
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - generated-chart-output.yaml
+patches:
+  - path: patch.yaml
+    target:
+      labelSelector: <LABEL_TARGET_SELECTOR>
+  - patch: |-
+      - op: add
+        path: "/spec/template/spec/containers/0/env/-"
+        value:
+          name: JAVA_TOOL_OPTIONS
+          value: >-
+            -javaagent:/shared-vol/otel-agent.jar 
+            -Dotel.javaagent.extensions=/shared-vol/digma-ext.jar 
+            -Dotel.exporter.otlp.traces.endpoint=<DIGMA_OTLP_ENDPOINT>
+            -Dotel.traces.exporter=otlp 
+            -Dotel.metrics.exporter=none 
+            -Dotel.logs.exporter=none 
+            -Dotel.exporter.otlp.protocol=grpc 
+            -Dotel.instrumentation.common.experimental.controller.telemetry.enabled=true 
+            -Dotel.instrumentation.common.experimental.view.telemetry.enabled=true 
+            -Dotel.instrumentation.experimental.span-suppression-strategy=none 
+            -Dotel.service.name=<SERVICE_NAME>
+      - op: add
+        path: "/spec/template/spec/containers/0/env/-"
+        value:
+          name: OTEL_RESOURCE_ATTRIBUTES
+          value: <SERVICE_OTEL_RESOURCE_ATTRIBUTES>
+      - op: add
+        path: "/spec/template/spec/containers/0/volumeMounts/-"
+        value:
+          name: shared
+          mountPath: /shared-vol
+      - op: add
+        path: "/spec/template/spec/containers/1/env/-"
+        value:
+          name: JAVA_TOOL_OPTIONS
+          value: >-
+            -javaagent:/shared-vol/otel-agent.jar 
+            -Dotel.javaagent.extensions=/shared-vol/digma-ext.jar 
+            -Dotel.exporter.otlp.traces.endpoint=<DIGMA_OTLP_ENDPOINT>
+            -Dotel.traces.exporter=otlp 
+            -Dotel.metrics.exporter=none 
+            -Dotel.logs.exporter=none 
+            -Dotel.exporter.otlp.protocol=grpc 
+            -Dotel.instrumentation.common.experimental.controller.telemetry.enabled=true 
+            -Dotel.instrumentation.common.experimental.view.telemetry.enabled=true 
+            -Dotel.instrumentation.experimental.span-suppression-strategy=none 
+            -Dotel.service.name=<SERVICE_NAME>
+      - op: add
+        path: "/spec/template/spec/containers/1/env/-"
+        value:
+          name: OTEL_RESOURCE_ATTRIBUTES
+          value: <SERVICE_OTEL_RESOURCE_ATTRIBUTES>
+      - op: add
+        path: "/spec/template/spec/containers/1/volumeMounts/-"
+        value:
+          name: shared
+          mountPath: /shared-vol
+    target:
+      labelSelector: <LABEL_TARGET_SELECTOR>
+```
