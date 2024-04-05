@@ -1,4 +1,6 @@
-# java-in-helm-instrumentation
+# digma-helm-helper
+
+This repo contains helpers to instrument an application running in a Helm file - without changing the original Helm file.
 
 ## Prerequisite
 
