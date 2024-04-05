@@ -5,7 +5,7 @@ resources:
 patches:
   - path: patch.yaml
     target:
-      labelSelector: <LABEL_TARGET_SELECTOR>
+      labelSelector: app=pet-clinic-app
   - patch: |-
       - op: add
         path: "/spec/template/spec/containers/0/env/-"
@@ -14,7 +14,7 @@ patches:
           value: >-
             -javaagent:/shared-vol/otel-agent.jar 
             -Dotel.javaagent.extensions=/shared-vol/digma-ext.jar 
-            -Dotel.exporter.otlp.traces.endpoint=<DIGMA_OTLP_ENDPOINT>
+            -Dotel.exporter.otlp.traces.endpoint=http://localhost:5050
             -Dotel.traces.exporter=otlp 
             -Dotel.metrics.exporter=none 
             -Dotel.logs.exporter=none 
@@ -22,16 +22,16 @@ patches:
             -Dotel.instrumentation.common.experimental.controller.telemetry.enabled=true 
             -Dotel.instrumentation.common.experimental.view.telemetry.enabled=true 
             -Dotel.instrumentation.experimental.span-suppression-strategy=none 
-            -Dotel.service.name=<SERVICE_NAME>
+            -Dotel.service.name=my_service
       - op: add
         path: "/spec/template/spec/containers/0/env/-"
         value:
           name: OTEL_RESOURCE_ATTRIBUTES
-          value: <SERVICE_OTEL_RESOURCE_ATTRIBUTES>
+          value: digma.environment=tests
       - op: add
         path: "/spec/template/spec/containers/0/volumeMounts/-"
         value:
           name: shared
           mountPath: /shared-vol
     target:
-      labelSelector: <LABEL_TARGET_SELECTOR>
+      labelSelector: app=pet-clinic-app
