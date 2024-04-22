@@ -3,7 +3,7 @@
 # Function to display usage
 usage() {
     echo "Usage: $0 <DIGMA_OTLP_ENDPOINT> <SERVICE_NAME> <ENVIRONMENT_ID> <LABEL_TARGET_SELECTOR>"
-    echo "Example: $0 http://my.digma.collector:5050 clinic-service perf-tests app=pet-clinic-app"
+    echo "Example: $0 http://my.digma.collector:5050 clinic-service perf-tests#ID#1 app=pet-clinic-app"
     exit 1
 }
 
