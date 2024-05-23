@@ -20,10 +20,10 @@ script_dir=$(cd "$(dirname "$0")" && pwd)
 # Assign arguments to variables
 DIGMA_OTLP_ENDPOINT=$1
 SERVICE_NAME=$2
-ENVIRONMENT_ID=$3
+ENVIRONMENT_NAME=$3
 LABEL_TARGET_SELECTOR=$4
 
-SERVICE_OTEL_RESOURCE_ATTRIBUTES="digma.environment.id=$ENVIRONMENT_ID"
+SERVICE_OTEL_RESOURCE_ATTRIBUTES="digma.environment=$ENVIRONMENT_NAME,digma.environment.type=Public"
 
 original_file="${script_dir}/kustomization.yaml"
 
