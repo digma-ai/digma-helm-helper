@@ -23,6 +23,7 @@ patches:
             -Dotel.instrumentation.common.experimental.view.telemetry.enabled=true 
             -Dotel.instrumentation.experimental.span-suppression-strategy=none 
             -Dotel.service.name=<SERVICE_NAME>
+            -Dotel.instrumentation.digma-methods.enabled=false
       - op: add
         path: "/spec/template/spec/containers/0/env/-"
         value:
