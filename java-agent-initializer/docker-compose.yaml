@@ -4,6 +4,8 @@ services:
     build: .
     volumes:
     - "java_agent_data:/shared-vol/"
+    environment:
+      DIG_AGENT_VERSION: "2.0.5"
 
 volumes:
   java_agent_data:
