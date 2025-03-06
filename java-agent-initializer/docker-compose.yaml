@@ -5,7 +5,9 @@ services:
     volumes:
     - "java_agent_data:/shared-vol/"
     environment:
-      DIG_AGENT_VERSION: "2.0.5"
+      OTEL_AGENT_VERSION: "latest"
+      DIG_AGENT_VERSION: "latest"
+      DIG_EXT_VERSION: "latest"
 
 volumes:
   java_agent_data:

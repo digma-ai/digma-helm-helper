@@ -5,16 +5,14 @@ set -e
 apk --no-cache add curl
 
 # Define environment variables for versions (default to "latest" if not set)
-OTEL_VERSION=${OTEL_VERSION:-"2.1.0"}
-DIG_EXT_VERSION=${DIG_EXT_VERSION:-"latest"}
-DIG_AGENT_VERSION=${DIG_AGENT_VERSION:-"latest"}
+OTEL_AGENT_VERSION=${OTEL_AGENT_VERSION:-"2.10.0"}
+DIG_AGENT_VERSION=${DIG_AGENT_VERSION:-"2.0.4"}
+DIG_EXT_VERSION=${DIG_EXT_VERSION:-"2.10.1"}
 
-OTEL_URL="https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v${OTEL_VERSION}/opentelemetry-javaagent.jar"
-
-if [ "$DIG_EXT_VERSION" = "latest" ]; then
-    DIG_EXT_URL="https://github.com/digma-ai/otel-java-instrumentation/releases/latest/download/digma-otel-agent-extension.jar"
+if [ "$OTEL_AGENT_VERSION" = "latest" ]; then
+    OTEL_AGENT_URL="https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar"
 else
-    DIG_EXT_URL="https://github.com/digma-ai/otel-java-instrumentation/releases/download/v${DIG_EXT_VERSION}/digma-otel-agent-extension.jar"
+    OTEL_AGENT_URL="https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v${OTEL_AGENT_VERSION}/opentelemetry-javaagent.jar"
 fi
 
 if [ "$DIG_AGENT_VERSION" = "latest" ]; then
@@ -23,15 +21,22 @@ else
     DIG_AGENT_URL="https://github.com/digma-ai/digma-agent/releases/download/v${DIG_AGENT_VERSION}/digma-agent.jar"
 fi
 
+if [ "$DIG_EXT_VERSION" = "latest" ]; then
+    DIG_EXT_URL="https://github.com/digma-ai/otel-java-instrumentation/releases/latest/download/digma-otel-agent-extension.jar"
+else
+    DIG_EXT_URL="https://github.com/digma-ai/otel-java-instrumentation/releases/download/v${DIG_EXT_VERSION}/digma-otel-agent-extension.jar"
+fi
+
 # Download the files
-echo "Downloading OpenTelemetry Java Agent from: $OTEL_URL"
-curl -L --fail --show-error "$OTEL_URL" -o otel-agent.jar
+echo "Downloading OpenTelemetry Java Agent from: $OTEL_AGENT_URL"
+curl -L --fail --show-error "$OTEL_AGENT_URL" -o otel-agent.jar
+
+echo "Downloading Digma Agent from: $DIG_AGENT_URL"
+curl -L --fail --show-error "$DIG_AGENT_URL" -o dig-agent.jar
 
 echo "Downloading Digma OTEL Agent Extension from: $DIG_EXT_URL"
 curl -L --fail --show-error "$DIG_EXT_URL" -o dig-ext.jar
 
-echo "Downloading Digma Agent from: $DIG_AGENT_URL"
-curl -L --fail --show-error "$DIG_AGENT_URL" -o dig-agent.jar
 
 # Copy files to shared volume
 cp otel-agent.jar /shared-vol/otel-agent.jar
